@@ -1,29 +1,29 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import type { ChangeEvent } from "react";
-import Link from "next/link";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useDebouncedCallback } from "use-debounce";
+import { useState } from 'react';
+import type { ChangeEvent } from 'react';
+import Link from 'next/link';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useDebouncedCallback } from 'use-debounce';
 
-import NoteList from "@/components/NoteList/NoteList";
-import SearchBox from "@/components/SearchBox/SearchBox";
-import Pagination from "@/components/Pagination/Pagination";
-import { fetchNotes } from "@/lib/api/clientApi";
+import NoteList from '@/components/NoteList/NoteList';
+import SearchBox from '@/components/SearchBox/SearchBox';
+import Pagination from '@/components/Pagination/Pagination';
+import { fetchNotes } from '@/lib/api/clientApi';
 
-import css from "./notes.module.css";
+import css from './notes.module.css';
 
 type Props = {
   tag: string;
 };
 
 export default function NotesClient({ tag }: Props) {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
 
   const { data, isLoading, isError, isSuccess } = useQuery({
-    queryKey: ["notes", page, search, tag],
-   queryFn: () => fetchNotes({ page, search, tag }),
+    queryKey: ['notes', page, search, tag],
+    queryFn: () => fetchNotes({ page, search, tag }),
     placeholderData: keepPreviousData,
   });
 

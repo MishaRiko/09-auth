@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, type FC, type ReactNode } from "react";
-import css from "./Modal.module.css";
+import { useEffect, type FC, type ReactNode } from 'react';
+import css from './Modal.module.css';
 
 interface ModalProps {
   children: ReactNode;
@@ -11,15 +11,15 @@ interface ModalProps {
 const Modal: FC<ModalProps> = ({ children, onClose }) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === 'Escape') onClose();
     };
 
     const originalStyle = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = originalStyle;
     };
   }, [onClose]);

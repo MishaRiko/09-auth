@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 type Draft = {
   title: string;
@@ -8,9 +8,9 @@ type Draft = {
 };
 
 const initialDraft: Draft = {
-  title: "",
-  content: "",
-  tag: "Todo",
+  title: '',
+  content: '',
+  tag: 'Todo',
 };
 
 type NoteStore = {
@@ -21,17 +21,17 @@ type NoteStore = {
 
 export const useNoteStore = create<NoteStore>()(
   persist(
-    (set) => ({
+    set => ({
       draft: initialDraft,
-      setDraft: (note) =>
-        set((state) => ({
+      setDraft: note =>
+        set(state => ({
           draft: { ...state.draft, ...note },
         })),
       clearDraft: () => set({ draft: initialDraft }),
     }),
     {
-      name: "note-draft",
-      partialize: (state) => ({ draft: state.draft }),
+      name: 'note-draft',
+      partialize: state => ({ draft: state.draft }),
     }
   )
 );

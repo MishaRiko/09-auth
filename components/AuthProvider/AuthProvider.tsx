@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect } from 'react';
@@ -10,8 +9,8 @@ export default function AuthProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const setUser = useAuthStore((s) => s.setUser);
-  const clearIsAuthenticated = useAuthStore((s) => s.clearIsAuthenticated);
+  const setUser = useAuthStore(s => s.setUser);
+  const clearIsAuthenticated = useAuthStore(s => s.clearIsAuthenticated);
 
   useEffect(() => {
     const init = async () => {

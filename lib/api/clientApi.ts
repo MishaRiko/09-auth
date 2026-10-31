@@ -57,7 +57,6 @@ import { api } from './api';
 import type { Note } from '@/types/note';
 import type { User } from '@/types/user';
 
-
 export interface LoginData {
   email: string;
   password: string;
