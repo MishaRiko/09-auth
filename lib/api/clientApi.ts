@@ -140,7 +140,10 @@ export const getMe = async (): Promise<User> => {
   return data;
 };
 
-export const updateMe = async (payload: Partial<User>): Promise<User> => {
+export interface UpdateMePayload {
+  username: string;
+}
+export const updateMe = async (payload: UpdateMePayload): Promise<User> => {
   const { data } = await api.patch<User>('/users/me', payload);
   return data;
 };

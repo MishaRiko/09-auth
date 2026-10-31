@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { FC } from 'react';
 import type { NoteTag } from '../../types/note';
 import { createNote } from '@/lib/api/clientApi';
@@ -19,6 +19,15 @@ const NoteForm: FC = () => {
   const queryClient = useQueryClient();
   const { draft, setDraft, clearDraft } = useNoteStore();
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: (values: NoteFormValues) => createNote(values),
+    onSuccess: () => {
+      clearDraft();
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
+      router.push('/notes/filter/all');
+    },
+  });
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -31,21 +40,17 @@ const NoteForm: FC = () => {
     router.back();
   };
 
-  const formAction = async (formData: FormData) => {
-    const values: NoteFormValues = {
-      title: formData.get('title') as string,
-      content: formData.get('content') as string,
-      tag: formData.get('tag') as NoteTag,
-    };
-
-    await createNote(values);
-    clearDraft();
-    queryClient.invalidateQueries({ queryKey: ['notes'] });
-    router.push('/notes/filter/all');
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    mutate({
+      title: draft.title,
+      content: draft.content,
+      tag: draft.tag as NoteTag,
+    });
   };
 
   return (
-    <form action={formAction} className={css.form}>
+    <form onSubmit={handleSubmit} className={css.form}>
       <div className={css.formGroup}>
         <label htmlFor="title">Title</label>
         <input
@@ -101,8 +106,12 @@ const NoteForm: FC = () => {
           Cancel
         </button>
 
-        <button type="submit" className={css.submitButton}>
-          Create note
+        <button
+          type="submit"
+          className={css.submitButton}
+          disabled={isPending}
+        >
+          {isPending ? 'Creating...' : 'Create note'}
         </button>
       </div>
     </form>
